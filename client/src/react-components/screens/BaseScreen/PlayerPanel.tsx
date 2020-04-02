@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { ApplicationState } from '@redux/index';
 import { Player } from '@redux/player/types';
 import { setName } from '@redux/player/actions';
@@ -6,10 +6,10 @@ import { connect } from 'react-redux';
 
 export const PLAYER_PANEL_WIDTH = 350;
 
-interface PlayerPanelItemProps {
+interface AlivePlayerPanelItemProps {
   name: string
 }
-const  PlayerPanelItem = ({name}: PlayerPanelItemProps) => (
+const AlivePlayerPanelItem = ({name}: AlivePlayerPanelItemProps) => (
   <li
     style={{
       listStyle: 'none',
@@ -17,6 +17,24 @@ const  PlayerPanelItem = ({name}: PlayerPanelItemProps) => (
     }}
   >{name}</li>
 )
+interface DeadPlayerPanelItemProps {
+  name: string
+}
+const DeadPlayerPanelItem = ({name}: AlivePlayerPanelItemProps) => (
+  <li
+    style={{
+      listStyle: 'none',
+      height: 35,
+      color: 'gray'
+    }}
+  >{name}</li>
+)
+
+const labelStyle: CSSProperties = {
+  listStyle: 'none',
+  textAlign: 'center',
+  color: 'gray'
+};
 
 function PlayersPanel({players}: {players: Player[]}) {
   return (
@@ -31,7 +49,13 @@ function PlayersPanel({players}: {players: Player[]}) {
       padding: 20,
       fontSize: 20
     }}>
-      {players.map(player => <PlayerPanelItem name={player.name} />)}
+      <li style={labelStyle}>Am Leben</li>
+
+      {players.filter(player => player.alive).map(player => <AlivePlayerPanelItem name={player.name} />)}
+
+      <li style={labelStyle}>✞ Verstorben ✞</li>
+
+      {players.filter(player => !player.alive).map(player => <DeadPlayerPanelItem name={player.name} />)}
     </ul>
   )
 }
