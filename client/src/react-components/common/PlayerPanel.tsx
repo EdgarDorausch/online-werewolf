@@ -1,7 +1,7 @@
 import React from 'react';
-import { ApplicationState } from '../../redux';
-import { Player } from '../../redux/player/types';
-import { setName } from '../../redux/player/actions';
+import { ApplicationState } from '@redux/index';
+import { Player } from '@redux/player/types';
+import { setName } from '@redux/player/actions';
 import { connect } from 'react-redux';
 
 function PlayersPanel({players}: {players: Player[]}) {
