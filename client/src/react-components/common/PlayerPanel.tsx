@@ -4,7 +4,7 @@ import { Player } from '../../redux/player/types';
 import { setName } from '../../redux/player/actions';
 import { connect } from 'react-redux';
 
-function Players({players}: {players: Player[]}) {
+function PlayersPanel({players}: {players: Player[]}) {
   return (
     <ul>
       {players.map(player => <li>{player.name}</li>)}
@@ -23,4 +23,4 @@ const mapDispatchToProps = { setName }
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Players)
+)(PlayersPanel)
