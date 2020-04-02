@@ -1,5 +1,5 @@
 import {
-  SetScreenAction, ScreenID, GameActions
+  SetScreenAction, ScreenID, GameActions, GameStatus
 } from './types';
 
 export function setName(screen: ScreenID): GameActions {
@@ -16,6 +16,15 @@ export function setPlayerId(id: number): GameActions {
     type: '@@GAME/SET_PLAYER_ID',
     payload: {
       id
+    }
+  }
+};
+
+export function setGameStatus(status: GameStatus): GameActions {
+  return {
+    type: '@@GAME/SET_GAME_STATUS',
+    payload: {
+      status
     }
   }
 };

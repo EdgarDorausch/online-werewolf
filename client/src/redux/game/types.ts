@@ -4,9 +4,15 @@ export enum ScreenID {
   VILLAGER_SLEEPING
 }
 
+export enum GameStatus {
+  STARTED,
+  PENDING
+} 
+
 export type GameState = {
   currentScreen: ScreenID
-  ownPlayerId: number|null
+  ownPlayerId: number
+  status: GameStatus
 };
 
 // Action-Types:
@@ -20,11 +26,19 @@ export interface SetScreenAction extends Action {
 export interface SetOwnPlayerIdAction extends Action {
   type: '@@GAME/SET_PLAYER_ID';
   payload: {
-    id: number|null,
+    id: number,
+  };
+}
+
+export interface SetGameStatusAction extends Action {
+  type: '@@GAME/SET_GAME_STATUS';
+  payload: {
+    status: GameStatus,
   };
 }
 
 
 export type GameActions =
   SetScreenAction |
-  SetOwnPlayerIdAction
+  SetOwnPlayerIdAction |
+  SetGameStatusAction

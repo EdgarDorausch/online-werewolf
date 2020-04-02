@@ -39,7 +39,7 @@ const labelStyle: CSSProperties = {
 function PlayersPanel({players}: {players: Player[]}) {
   return (
     <ul style={{
-      backgroundColor: '#414154',
+      backgroundColor: 'rgb(43, 43, 49)',
       height: 'calc(100vh-20px)',
       width: PLAYER_PANEL_WIDTH,
       margin: 0,

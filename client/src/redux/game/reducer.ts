@@ -1,9 +1,10 @@
 import { Reducer } from 'redux';
-import { GameActions, GameState, ScreenID } from './types';
+import { GameActions, GameState, ScreenID, GameStatus } from './types';
 
 export const initialState: GameState = {
   currentScreen: ScreenID.VILLAGER_SLEEPING,
-  ownPlayerId: null
+  ownPlayerId: 0, //TODO:
+  status: GameStatus.PENDING
 };
 
 const reducer: Reducer<GameState, GameActions> = (state: GameState = initialState, action: GameActions) => {
@@ -17,6 +18,11 @@ const reducer: Reducer<GameState, GameActions> = (state: GameState = initialStat
       return {
         ...state,
         ownPlayerId: action.payload.id
+      }
+    case '@@GAME/SET_GAME_STATUS':
+      return {
+        ...state,
+        status: action.payload.status
       }
 
     default:

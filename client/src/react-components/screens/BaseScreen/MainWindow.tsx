@@ -2,8 +2,11 @@ import React from 'react';
 import PlayerPanel, { PLAYER_PANEL_WIDTH } from '@components/screens/BaseScreen/PlayerPanel';
 import { connect } from 'react-redux';
 import { ApplicationState } from '@redux/index';
-import { ScreenID } from '@redux/game/types';
+import { ScreenID, GameStatus } from '@redux/game/types';
 import VillagerSleeping from '../VillagerSleeping';
+import DeadStatusHeader from './Header/DeadStatus';
+import ShowRoleHeader from './Header/ShowRole';
+import DefaultHeader from './Header/Default';
 
 const BACKGROUND_DAY = 'linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12)';
 const BACKGROUND_NIGHT = 'linear-gradient(to right bottom, #713858, #693a60, #5f3d67, #54416d, #464471, #354a75, #204f77, #005375, #005a6f, #005f63, #0c6254, #336444)'
@@ -79,7 +82,21 @@ function selectWindowContent(state: ApplicationState): React.ComponentType {
 }
 
 function selectWindowHeader(state: ApplicationState): React.ComponentType {
-  return () => (<p>Werwolf</p>)
+  const ownId = state.game.ownPlayerId;
+  const self = state.player.find(p => p.id === ownId);
+  
+  if (self === undefined) {
+    throw new Error('own player id is invalid');
+  }
+
+  switch(true) {
+    case !self.alive:
+      return DeadStatusHeader;
+    case state.game.status === GameStatus.STARTED:
+      return ShowRoleHeader;
+    default:
+      return DefaultHeader;
+  }
 }
 
 function mapStateToProps(state: ApplicationState) {
