@@ -5,8 +5,14 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import configureStore from './redux/configureStore';
+import { addPlayer } from '@redux/player/actions';
 
 const reduxStore = configureStore();
+
+reduxStore.dispatch(addPlayer('peter', 0));
+reduxStore.dispatch(addPlayer('edgardo', 2));
+reduxStore.dispatch(addPlayer('hanna', 5));
+reduxStore.dispatch(addPlayer('mira', 7));
 
 ReactDOM.render(
   // <React.StrictMode>

@@ -1,7 +1,7 @@
 import { Reducer } from 'redux';
 import { PlayerState, PlayerActions } from './types';
 
-export const initialState: PlayerState = [{name: 'peter', id: 0}]
+export const initialState: PlayerState = [];
 
 const reducer: Reducer<PlayerState, PlayerActions> = (state: PlayerState = initialState, {type, payload}: PlayerActions) => {
   switch (type) {
@@ -16,6 +16,11 @@ const reducer: Reducer<PlayerState, PlayerActions> = (state: PlayerState = initi
           }
         }
       })
+    case '@@Player/ADD_PLAYER':
+      return [...state, {
+        name: payload.name,
+        id: payload.id
+      }]
 
     default:
       return state;

@@ -16,6 +16,15 @@ export interface SetNameAction extends Action {
   };
 }
 
+export interface AddPlayerAction extends Action {
+  type: '@@Player/ADD_PLAYER';
+  payload: {
+    id: number,
+    name: string,
+  };
+}
+
 
 export type PlayerActions =
-  SetNameAction 
+  SetNameAction |
+  AddPlayerAction
