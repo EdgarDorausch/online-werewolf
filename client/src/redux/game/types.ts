@@ -6,6 +6,7 @@ export enum ScreenID {
 
 export type GameState = {
   currentScreen: ScreenID
+  ownPlayerId: number|null
 };
 
 // Action-Types:
@@ -16,6 +17,14 @@ export interface SetScreenAction extends Action {
   };
 }
 
+export interface SetOwnPlayerIdAction extends Action {
+  type: '@@GAME/SET_PLAYER_ID';
+  payload: {
+    id: number|null,
+  };
+}
+
 
 export type GameActions =
-  SetScreenAction
+  SetScreenAction |
+  SetOwnPlayerIdAction

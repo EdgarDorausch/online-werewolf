@@ -60,7 +60,6 @@ function MainWindow({Header, Content}: MainWindowProps) {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        borderBottom: '2px solid #000',
       }}>
         <Content />
       </div>
