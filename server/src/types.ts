@@ -1,6 +1,8 @@
 import * as uuid from 'uuid';
+import { info } from 'winston';
+import logger from '../logger';
 
-type FindLobbyResponseType =
+export type FindLobbyResponseType =
   'NOT_FOUND' |
   'ALREADY_STARTED' |
   'OK';
@@ -11,9 +13,9 @@ type FindLobbyResponse = {type: 'ALREADY_STARTED' | 'NOT_FOUND'} |
 export class GameSessionManager {
   private sessions: {[k: string]: GameSessionPointer} = {};
 
-  createNewLobby(): string {
+  createNewLobby(member: SessionMember, userName: string): string {
     const sessionId = uuid.v1();
-    this.sessions[sessionId] =  new GameSessionPointer();
+    this.sessions[sessionId] =  new GameSessionPointer(new Player(member, userName));
     return sessionId;
   }
 
@@ -31,20 +33,62 @@ export class GameSessionManager {
 
 }
 
-class SessionMember {
-  id: string
+export class MemberManager {
+  private members: {[k: string]: SessionMember} = {};
 
-  constructor(public userName: string) {
-    this.id = uuid.v1();
+  add(socket: SocketIO.Socket): SessionMember {
+    const newId = uuid.v1();
+    const newMember = new SessionMember(newId, socket);
+    this.members[newId] = newMember;
+
+    socket.on('disconnecting', () => {
+      this.remove(newId);
+      newMember.onDisconnect()
+    })
+
+    return newMember;
   }
+
+  get(id: string): SessionMember|null {
+    const member = this.members[id];
+
+    if (member === undefined) {
+      return null;
+    } else {
+      return member;
+    }
+  }
+
+  remove(id: string) {
+    delete this.members[id];
+  }
+}
+
+class SessionMember {
+  disconnectCallbacks: ((id: string) => void)[] = []
+
+  constructor(public id: string, private socket: SocketIO.Socket) {}
+
+  onDisconnect() {
+    logger.info(`Disconnection (MemberId: ${this.id})`);
+    this.disconnectCallbacks.forEach(cb => cb(this.id));
+  }
+
+  addDisconnectListener(callback: (id: string) => void) {
+    this.disconnectCallbacks.push(callback);
+  }
+}
+
+class Player {
+  constructor(public member: SessionMember, public userName: string) {}
 }
 
 class GameSessionPointer {
   public session: GameSession
 
-  constructor() {
+  constructor(creator: Player) {
     this.onGameStart.bind(this);
-    this.session = new LobbySession(this.onGameStart);
+    this.session = new LobbySession(creator, this.onGameStart);
   }
 
   private onGameStart(newSession: StartedSession) {
@@ -53,35 +97,36 @@ class GameSessionPointer {
 }
 
 export class LobbySession {
-  private members: SessionMember[] = []
+  private players: Player[] = []
+  private roomBroadcast: SocketIO.Socket;
 
-  constructor(private onGameStart: (s: StartedSession) => void) {}
+  constructor(private creator: Player, private onGameStart: (s: StartedSession) => void) {}
 
   startGame(): StartedSession {
-    const startedSession = new StartedSession(this.members);
+    const startedSession = new StartedSession(this.players);
     this.onGameStart(startedSession);
     return startedSession;
   }
 
   /**
-   * @returns SessionMemberID
+   * @returns if joining was successful
    */
-  join(userName: string): string|null {
-    if(this.members.some(m => m.userName === userName))
-      return null;
+  join(userName: string, member: SessionMember): boolean {
+    if(this.players.some(p => p.userName === userName))
+      return false;
 
-    const newMember = new SessionMember(userName);
-    this.members.push(newMember);
-    return newMember.id;
+    const newPlayer = new Player(member, userName);
+    this.players.push(newPlayer);
+    return true;
   }
 
   leave(memberId: string) {
-    this.members = this.members.filter(m => m.id !== memberId);
+    this.players = this.players.filter(p => p.member.id !== memberId);
   }
 }
 
 export class StartedSession {
-  constructor(private members: SessionMember[]) {}
+  constructor(private players: Player[]) {}
 }
 type GameSession = LobbySession | StartedSession;
 

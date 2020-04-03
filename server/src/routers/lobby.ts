@@ -1,14 +1,23 @@
 
 import * as express from 'express';
-import { gsm } from '..';
+import { gsm, mm } from '..';
+import logger from '../../logger';
 
 
 const lobbyRouter = express.Router()
 
-lobbyRouter.get('/create', (req, res) => {
-  const sessionId = gsm.createNewLobby();
+lobbyRouter.post('/create', (req, res) => {
+  const body = req.body;
+  const {memberId, userName} = body;
+  
+  const member = mm.get(memberId);
+  if (member === null) {
+    res.status(404).send('Member not found');
+    return;
+  }
 
-  console.log(`Created new Session: ${sessionId}`);
+  const sessionId = gsm.createNewLobby(memberId, userName);
+  logger.info(`Created new Session: ${sessionId}`);
 
   res.json({
     sessionId
@@ -40,26 +49,34 @@ lobbyRouter.get('/find/:id', (req, res) => {
 lobbyRouter.post('/join/', (req, res) => {
   const body = req.body;
 
-  if (body.id === undefined || body.userName === undefined) {
-    res.status(400);
+  if (body.memberId === undefined || body.userName === undefined || body.sessionId === undefined) {
+    res.sendStatus(400);
   }
 
-  const findRes = gsm.findLobby(body.id);
+  const {memberId, sessionId, userName} = body;
+  const member = mm.get(memberId);
+
+  if (member === null) {
+    res.status(404).send('Member not found');
+    return;
+  }
+
+  const findRes = gsm.findLobby(body.sessionId);
 
   switch (findRes.type) {
     case 'NOT_FOUND':
-      res.sendStatus(404);
+      res.status(404).send('Session not found');
       break;
     case 'ALREADY_STARTED':
       res.sendStatus(406);
       break;
     case 'OK':
-      const memberId = findRes.session.join(body.userName);
-      if (memberId === null) {
-        res.status(403).send('UserName already used');
+  
+      if (findRes.session.join(userName, member)) {
+        res.status(200).send({userName: body.userName});
       }
       else {
-        res.status(200).send({memberId,userName: body.userName});
+        res.status(403).send('UserName already used');
       }
       break
   }
