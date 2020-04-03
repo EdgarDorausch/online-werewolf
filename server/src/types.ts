@@ -1,12 +1,12 @@
 import * as uuid from 'uuid';
 
-enum FindLobbyResponseType {
-  NOT_FOUND,
-  ALREADY_STARTED,
-  OK
-}
-type FindLobbyResponse = {type: FindLobbyResponseType.ALREADY_STARTED | FindLobbyResponseType.NOT_FOUND} |
-  {type: FindLobbyResponseType.OK, session: LobbySession}
+type FindLobbyResponseType =
+  'NOT_FOUND' |
+  'ALREADY_STARTED' |
+  'OK';
+
+type FindLobbyResponse = {type: 'ALREADY_STARTED' | 'NOT_FOUND'} |
+  {type: 'OK', session: LobbySession}
 
 export class GameSessionManager {
   private sessions: {[k: string]: GameSessionPointer} = {};
@@ -20,18 +20,24 @@ export class GameSessionManager {
   findLobby(id: string): FindLobbyResponse {
     const res = this.sessions[id];
     if (res === undefined) {
-      return {type: FindLobbyResponseType.NOT_FOUND}
+      return {type: 'NOT_FOUND'}
     }
     if (res.session instanceof StartedSession) {
-      return {type: FindLobbyResponseType.ALREADY_STARTED}
+      return {type: 'ALREADY_STARTED'}
     }
 
-    return {type: FindLobbyResponseType.OK, session: res.session}
+    return {type: 'OK', session: res.session}
   }
 
 }
 
-class SessionMember {}
+class SessionMember {
+  id: string
+
+  constructor(public userName: string) {
+    this.id = uuid.v1();
+  }
+}
 
 class GameSessionPointer {
   public session: GameSession
@@ -55,6 +61,22 @@ export class LobbySession {
     const startedSession = new StartedSession(this.members);
     this.onGameStart(startedSession);
     return startedSession;
+  }
+
+  /**
+   * @returns SessionMemberID
+   */
+  join(userName: string): string|null {
+    if(this.members.some(m => m.userName === userName))
+      return null;
+
+    const newMember = new SessionMember(userName);
+    this.members.push(newMember);
+    return newMember.id;
+  }
+
+  leave(memberId: string) {
+    this.members = this.members.filter(m => m.id !== memberId);
   }
 }
 
