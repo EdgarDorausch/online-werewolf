@@ -6,15 +6,19 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import configureStore from './redux/configureStore';
 import { addPlayer, setAliveStatus } from '@redux/player/actions';
+import io from 'socket.io-client';
+import { startMainScreen } from '@redux/game/actions';
+import { setupSocketIoListeners } from './socket-io';
 
 const reduxStore = configureStore();
 
-reduxStore.dispatch(addPlayer('peter', 0));
-reduxStore.dispatch(addPlayer('edgardo', 2));
-reduxStore.dispatch(addPlayer('hanna', 5));
-reduxStore.dispatch(addPlayer('mira', 7));
+reduxStore.dispatch(addPlayer('peter', '0'));
+reduxStore.dispatch(addPlayer('edgardo', '2'));
+reduxStore.dispatch(addPlayer('hanna', '5'));
+reduxStore.dispatch(addPlayer('mira', '7'));
+reduxStore.dispatch(setAliveStatus('2', false));
 
-reduxStore.dispatch(setAliveStatus(2, false));
+setupSocketIoListeners('http://localhost:8000', reduxStore);
 
 ReactDOM.render(
   // <React.StrictMode>

@@ -9,12 +9,13 @@ export enum GameStatus {
   LOBBY,
   MAIN,
   CREATE_LOBBY,
-  JOIN_LOBBY
+  JOIN_LOBBY,
+  LOADING
 } 
 
 export type GameState = {
   currentScreen: ScreenID
-  ownPlayerId: number
+  ownPlayerId: string
   status: GameStatus
 };
 
@@ -29,7 +30,7 @@ export interface SetScreenAction extends Action {
 export interface SetOwnPlayerIdAction extends Action {
   type: '@@GAME/SET_PLAYER_ID';
   payload: {
-    id: number,
+    id: string,
   };
 }
 
@@ -40,8 +41,16 @@ export interface SetGameStatusAction extends Action {
   };
 }
 
+export interface StartMainScreenAction extends Action {
+  type: '@@GAME/START_MAIN_SCREEN';
+  payload: {
+    memberId: string,
+  };
+}
+
 
 export type GameActions =
   SetScreenAction |
   SetOwnPlayerIdAction |
-  SetGameStatusAction
+  SetGameStatusAction |
+  StartMainScreenAction

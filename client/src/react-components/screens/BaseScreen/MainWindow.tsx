@@ -7,6 +7,8 @@ import VillagerSleeping from '../VillagerSleeping';
 import DeadStatusHeader from './Header/DeadStatus';
 import ShowRoleHeader from './Header/ShowRole';
 import DefaultHeader from './Header/Default';
+import Main from '../Main';
+import Loading from '../Loading';
 
 const BACKGROUND_DAY = 'linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12)';
 const BACKGROUND_NIGHT = 'linear-gradient(to right bottom, #713858, #693a60, #5f3d67, #54416d, #464471, #354a75, #204f77, #005375, #005a6f, #005f63, #0c6254, #336444)'
@@ -73,8 +75,25 @@ function MainWindow({Header, Content}: MainWindowProps) {
 }
 
 function selectWindowContent(state: ApplicationState): React.ComponentType {
+  const status = state.game.status;
+  
   switch(true) {
-    case state.game.currentScreen === ScreenID.VILLAGER_SLEEPING:
+    case status === GameStatus.MAIN:
+      return Main;
+    case status === GameStatus.LOADING:
+      return Loading;
+    case status === GameStatus.STARTED:
+      return selectGameScreen(state);
+    default:
+      throw new Error();
+  }
+}
+
+function selectGameScreen(state: ApplicationState): React.ComponentType {
+  const screen = state.game.currentScreen;
+
+  switch(true) {
+    case screen === ScreenID.VILLAGER_SLEEPING:
       return VillagerSleeping
     default:
       throw new Error();
@@ -86,6 +105,7 @@ function selectWindowHeader(state: ApplicationState): React.ComponentType {
   const self = state.player.find(p => p.id === ownId);
   
   if (self === undefined) {
+    return DefaultHeader //TODO:
     throw new Error('own player id is invalid');
   }
 

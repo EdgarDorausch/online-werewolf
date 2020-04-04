@@ -11,7 +11,7 @@ export function setName(screen: ScreenID): GameActions {
   }
 };
 
-export function setPlayerId(id: number): GameActions {
+export function setPlayerId(id: string): GameActions {
   return {
     type: '@@GAME/SET_PLAYER_ID',
     payload: {
@@ -29,3 +29,11 @@ export function setGameStatus(status: GameStatus): GameActions {
   }
 };
 
+export function startMainScreen(memberId: string): GameActions {
+  return {
+    type: '@@GAME/START_MAIN_SCREEN',
+    payload: {
+      memberId
+    }
+  }
+};

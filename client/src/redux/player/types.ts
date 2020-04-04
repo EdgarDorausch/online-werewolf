@@ -11,9 +11,9 @@ export enum Role {
 }
 
 export type Player = {
-  id: number
+  id: string
   name: string
-  inLoveWith: number|null
+  inLoveWith: string|null
   role: Role|null
   alive: boolean
 };
@@ -22,7 +22,7 @@ export type Player = {
 export interface SetNameAction extends Action {
   type: '@@Player/SET_NAME';
   payload: {
-    id: number,
+    id: string,
     name: string,
   };
 }
@@ -30,7 +30,7 @@ export interface SetNameAction extends Action {
 export interface AddPlayerAction extends Action {
   type: '@@Player/ADD_PLAYER';
   payload: {
-    id: number,
+    id: string,
     name: string,
   };
 }
@@ -38,15 +38,15 @@ export interface AddPlayerAction extends Action {
 export interface SetLoversAction extends Action {
   type: '@@Player/SET_LOVERS';
   payload: {
-    player1Id: number,
-    player2Id: number,
+    player1Id: string,
+    player2Id: string,
   };
 }
 
 export interface SetPlayerRoleAction extends Action {
   type: '@@Player/SET_ROLE';
   payload: {
-    id: number,
+    id: string,
     role: Role
   };
 }
@@ -54,7 +54,7 @@ export interface SetPlayerRoleAction extends Action {
 export interface SetPlayerAliveStatusAction extends Action {
   type: '@@Player/SET_ALIVE_STATUS';
   payload: {
-    id: number,
+    id: string,
     alive: boolean
   };
 }

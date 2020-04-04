@@ -3,8 +3,8 @@ import { GameActions, GameState, ScreenID, GameStatus } from './types';
 
 export const initialState: GameState = {
   currentScreen: ScreenID.VILLAGER_SLEEPING,
-  ownPlayerId: 0, //TODO:
-  status: GameStatus.MAIN
+  ownPlayerId: '0', //TODO:
+  status: GameStatus.LOADING
 };
 
 const reducer: Reducer<GameState, GameActions> = (state: GameState = initialState, action: GameActions) => {
@@ -23,6 +23,12 @@ const reducer: Reducer<GameState, GameActions> = (state: GameState = initialStat
       return {
         ...state,
         status: action.payload.status
+      }
+    case '@@GAME/START_MAIN_SCREEN':
+      return {
+        ...state,
+        status: GameStatus.MAIN,
+        ownPlayerId: action.payload.memberId
       }
 
     default:

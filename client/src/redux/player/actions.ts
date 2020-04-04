@@ -2,7 +2,7 @@ import {
   SetNameAction, AddPlayerAction, PlayerActions, Role
 } from './types';
 
-export function setName(name: string, id: number): PlayerActions {
+export function setName(name: string, id: string): PlayerActions {
   return {
     type: '@@Player/SET_NAME',
     payload: {
@@ -12,7 +12,7 @@ export function setName(name: string, id: number): PlayerActions {
   }
 };
 
-export function addPlayer(name: string, id: number): PlayerActions {
+export function addPlayer(name: string, id: string): PlayerActions {
   return {
     type: '@@Player/ADD_PLAYER',
     payload: {
@@ -22,7 +22,7 @@ export function addPlayer(name: string, id: number): PlayerActions {
   }
 };
 
-export function setLovers(player1Id: number, player2Id: number): PlayerActions {
+export function setLovers(player1Id: string, player2Id: string): PlayerActions {
   return {
     type: '@@Player/SET_LOVERS',
     payload: {
@@ -32,7 +32,7 @@ export function setLovers(player1Id: number, player2Id: number): PlayerActions {
   }
 };
 
-export function setRole(id: number, role: Role): PlayerActions {
+export function setRole(id: string, role: Role): PlayerActions {
   return {
     type: '@@Player/SET_ROLE',
     payload: {
@@ -42,7 +42,7 @@ export function setRole(id: number, role: Role): PlayerActions {
   }
 };
 
-export function setAliveStatus(id: number, alive: boolean): PlayerActions {
+export function setAliveStatus(id: string, alive: boolean): PlayerActions {
   return {
     type: '@@Player/SET_ALIVE_STATUS',
     payload: {
