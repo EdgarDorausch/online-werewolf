@@ -6,7 +6,10 @@ export enum ScreenID {
 
 export enum GameStatus {
   STARTED,
-  PENDING
+  LOBBY,
+  MAIN,
+  CREATE_LOBBY,
+  JOIN_LOBBY
 } 
 
 export type GameState = {

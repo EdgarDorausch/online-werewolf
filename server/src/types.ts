@@ -1,6 +1,6 @@
 import * as uuid from 'uuid';
 import { info } from 'winston';
-import logger from '../logger';
+import logger from './logger';
 
 export type FindLobbyResponseType =
   'NOT_FOUND' |

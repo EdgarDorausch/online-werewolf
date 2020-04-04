@@ -3,7 +3,7 @@ import { json, urlencoded } from 'body-parser';
 import * as socketio from 'socket.io';
 import { SocketProtocolEvents, GameSessionManager, FindLobbyResponseType, MemberManager } from './types';
 import lobbyRouter from './routers/lobby';
-import logger from '../logger';
+import logger from './logger';
 
 const app = express();
 app.set("port", process.env.PORT || 8000);

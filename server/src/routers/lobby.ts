@@ -1,7 +1,7 @@
 
 import * as express from 'express';
 import { gsm, mm } from '..';
-import logger from '../../logger';
+import logger from '../logger';
 
 
 const lobbyRouter = express.Router()

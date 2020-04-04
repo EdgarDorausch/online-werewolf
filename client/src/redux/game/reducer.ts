@@ -4,7 +4,7 @@ import { GameActions, GameState, ScreenID, GameStatus } from './types';
 export const initialState: GameState = {
   currentScreen: ScreenID.VILLAGER_SLEEPING,
   ownPlayerId: 0, //TODO:
-  status: GameStatus.PENDING
+  status: GameStatus.MAIN
 };
 
 const reducer: Reducer<GameState, GameActions> = (state: GameState = initialState, action: GameActions) => {
