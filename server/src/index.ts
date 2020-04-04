@@ -1,15 +1,18 @@
-import * as express from 'express';
+import express from 'express';
 import { json, urlencoded } from 'body-parser';
-import * as socketio from 'socket.io';
+import socketio from 'socket.io';
 import { SocketProtocolEvents, GameSessionManager, FindLobbyResponseType, MemberManager } from './types';
 import lobbyRouter from './routers/lobby';
 import logger from './logger';
+import { Foo } from '../../shared/shared'
+
+console.log(Foo)
 
 const app = express();
 app.set("port", process.env.PORT || 8000);
 
 const http = require("http").Server(app);
-const io = require('socket.io')(http) as SocketIO.Server
+const io = socketio(http)
 
 // simple '/' endpoint sending a Hello World
 // response

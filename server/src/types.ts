@@ -98,7 +98,7 @@ class GameSessionPointer {
 
 export class LobbySession {
   private players: Player[] = []
-  private roomBroadcast: SocketIO.Socket;
+  // private roomBroadcast: SocketIO.Socket;
 
   constructor(private creator: Player, private onGameStart: (s: StartedSession) => void) {}
 
