@@ -64,6 +64,6 @@
     "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
   },
   "references": [
-    {"path": "../shared"}
+    {"path": "../client/src/shared"}
   ]
 }

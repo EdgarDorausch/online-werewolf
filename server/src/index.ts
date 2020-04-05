@@ -4,7 +4,7 @@ import socketio from 'socket.io';
 import { SocketProtocolEvents, GameSessionManager, FindLobbyResponseType, MemberManager } from './types';
 import lobbyRouter from './routers/lobby';
 import logger from './logger';
-import { Foo } from '../../shared/shared'
+import { Foo } from '../../client/src/shared/shared'
 
 console.log(Foo)
 

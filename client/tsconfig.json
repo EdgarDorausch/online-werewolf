@@ -22,10 +22,5 @@
   "include": [
     "src"
   ],
-  "extends": "./tsconfig.paths.json",
-  "references": [
-    {
-      "path": "../shared"
-    }
-  ]
+  "extends": "./tsconfig.paths.json"
 }
