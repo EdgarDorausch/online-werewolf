@@ -1,5 +1,5 @@
 import React from 'react';
-import PlayerPanel, { PLAYER_PANEL_WIDTH } from '@components/screens/BaseScreen/PlayerPanel';
+import { PLAYER_PANEL_WIDTH } from '@components/screens/BaseScreen/PlayerPanel';
 import { connect } from 'react-redux';
 import { ApplicationState } from '@redux/index';
 import { ScreenID, GameStatus } from '@redux/game/types';
@@ -25,7 +25,7 @@ interface MainWindowProps {
 function MainWindow({Header, Content}: MainWindowProps) {
   return (
   <div style={{
-    backgroundImage: BACKGROUND_DAY,
+    backgroundImage: true ? BACKGROUND_DAY : BACKGROUND_NIGHT, //TODO: Choose condition
     height: '100vh',
     width: `calc(100vw - ${PLAYER_PANEL_WIDTH}px)`,
     display: 'flex',
@@ -106,7 +106,7 @@ function selectWindowHeader(state: ApplicationState): React.ComponentType {
   
   if (self === undefined) {
     return DefaultHeader //TODO:
-    throw new Error('own player id is invalid');
+    // throw new Error('own player id is invalid');
   }
 
   switch(true) {

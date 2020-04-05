@@ -1,13 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import configureStore from './redux/configureStore';
 import { addPlayer, setAliveStatus } from '@redux/player/actions';
-import io from 'socket.io-client';
-import { startMainScreen } from '@redux/game/actions';
 import { setupSocketIoListeners } from './socket-io';
 
 const reduxStore = configureStore();

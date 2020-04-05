@@ -1,5 +1,5 @@
 import {
-  SetNameAction, AddPlayerAction, PlayerActions, Role
+  PlayerActions, Role
 } from './types';
 
 export function setName(name: string, id: string): PlayerActions {

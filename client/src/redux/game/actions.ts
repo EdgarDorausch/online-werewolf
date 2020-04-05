@@ -1,5 +1,5 @@
 import {
-  SetScreenAction, ScreenID, GameActions, GameStatus
+  ScreenID, GameActions, GameStatus
 } from './types';
 
 export function setName(screen: ScreenID): GameActions {
