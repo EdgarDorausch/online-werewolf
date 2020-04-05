@@ -2,7 +2,7 @@ import React from 'react';
 import { PLAYER_PANEL_WIDTH } from '@components/screens/BaseScreen/PlayerPanel';
 import { connect } from 'react-redux';
 import { ApplicationState } from '@redux/index';
-import { ScreenID, GameStatus } from '@redux/game/types';
+import { ScreenID } from '@redux/game/types';
 import VillagerSleeping from '../VillagerSleeping';
 import DeadStatusHeader from './Header/DeadStatus';
 import ShowRoleHeader from './Header/ShowRole';
@@ -75,17 +75,17 @@ function MainWindow({Header, Content}: MainWindowProps) {
 }
 
 function selectWindowContent(state: ApplicationState): React.ComponentType {
-  const status = state.game.status;
+  const pageName = state.page.name;
   
-  switch(true) {
-    case status === GameStatus.MAIN:
+  switch(pageName) {
+    case 'HomePage':
       return Main;
-    case status === GameStatus.LOADING:
+    case 'NoMemberIdPage':
       return Loading;
-    case status === GameStatus.STARTED:
+    case 'StartedGamePage':
       return selectGameScreen(state);
     default:
-      throw new Error();
+      throw new Error('Unknown page name');
   }
 }
 
@@ -112,7 +112,7 @@ function selectWindowHeader(state: ApplicationState): React.ComponentType {
   switch(true) {
     case !self.alive:
       return DeadStatusHeader;
-    case state.game.status === GameStatus.STARTED:
+    case state.page.name === 'StartedGamePage':
       return ShowRoleHeader;
     default:
       return DefaultHeader;

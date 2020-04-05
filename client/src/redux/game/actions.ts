@@ -1,39 +1,11 @@
 import {
-  ScreenID, GameActions, GameStatus
+  GameActions
 } from './types';
+import { actionCreatorFactoryFactory } from '@redux/helper';
 
-export function setName(screen: ScreenID): GameActions {
-  return {
-    type: '@@GAME/SET_SCREEN',
-    payload: {
-      screen
-    }
-  }
-};
+const factory = actionCreatorFactoryFactory<GameActions>();
 
-export function setPlayerId(id: string): GameActions {
-  return {
-    type: '@@GAME/SET_PLAYER_ID',
-    payload: {
-      id
-    }
-  }
-};
+export const setPlayerId = factory('@@GAME/SET_PLAYER_ID');
 
-export function setGameStatus(status: GameStatus): GameActions {
-  return {
-    type: '@@GAME/SET_GAME_STATUS',
-    payload: {
-      status
-    }
-  }
-};
+export const setScreen = factory('@@GAME/SET_SCREEN');
 
-export function startMainScreen(memberId: string): GameActions {
-  return {
-    type: '@@GAME/START_MAIN_SCREEN',
-    payload: {
-      memberId
-    }
-  }
-};
