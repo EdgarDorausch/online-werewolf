@@ -9,6 +9,7 @@ import ShowRoleHeader from './Header/ShowRole';
 import DefaultHeader from './Header/Default';
 import Main from '../Main';
 import Loading from '../Loading';
+import CreateLobby from '../CreateLobby';
 
 const BACKGROUND_DAY = 'linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12)';
 const BACKGROUND_NIGHT = 'linear-gradient(to right bottom, #713858, #693a60, #5f3d67, #54416d, #464471, #354a75, #204f77, #005375, #005a6f, #005f63, #0c6254, #336444)'
@@ -80,6 +81,8 @@ function selectWindowContent(state: ApplicationState): React.ComponentType {
   switch(pageName) {
     case 'HomePage':
       return Main;
+    case 'CreateLobbyPage':
+      return CreateLobby;
     case 'NoMemberIdPage':
       return Loading;
     case 'StartedGamePage':

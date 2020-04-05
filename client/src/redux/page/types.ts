@@ -11,7 +11,8 @@ interface WithMemberId {
 
 
 interface NoMemberIdPage {
-  name: 'NoMemberIdPage'
+  name: 'NoMemberIdPage',
+  data: {}
 }
 
 interface HomePage {
@@ -24,11 +25,6 @@ interface LobbyPage {
   data: WithMemberId & {
     lobbyId: string
   }
-}
-
-interface CreateLobbyPage {
-  name: 'CreateLobbyPage',
-  data: WithMemberId & {}
 }
 
 interface CreateLobbyPage {
@@ -58,6 +54,8 @@ export type Page =
   JoinLobbyPage |
   StartedGamePage
 
+export type PageName = Page['name'];
+
 
 export type PageState = Page;
 
@@ -76,7 +74,16 @@ export interface StartHomePageAction extends Action {
   };
 }
 
+export interface SwitchPageKeepPropertiesAction extends Action {
+  type: '@@PAGE/SWITCH_PAGE_KEEP_PROPERTIES';
+  payload: {
+    pageName: PageName,
+    properties: string[]
+  };
+}
+
 
 export type PageActions =
   SetPageAction |
-  StartHomePageAction
+  StartHomePageAction |
+  SwitchPageKeepPropertiesAction

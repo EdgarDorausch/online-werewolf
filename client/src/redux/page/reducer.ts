@@ -2,7 +2,8 @@ import { Reducer } from 'redux';
 import { PageState, PageActions } from './types';
 
 export const initialState: PageState = {
-  name: 'NoMemberIdPage'
+  name: 'NoMemberIdPage',
+  data: {}
 };
 
 const reducer: Reducer<PageState, PageActions> = (state: PageState = initialState, action: PageActions) => {
@@ -16,6 +17,20 @@ const reducer: Reducer<PageState, PageActions> = (state: PageState = initialStat
         data: {
           memberId: action.payload.memberId
         }
+      }
+    case '@@PAGE/SWITCH_PAGE_KEEP_PROPERTIES':
+      const newData: {[k: string]: any} = {};
+      for(let key of action.payload.properties) {
+        if(key in state.data) {
+          newData[key] = (state.data as any)[key];
+        } else {
+          throw new Error('Can not keep properties while switching the page')
+        }
+      }
+
+      return {
+        name: action.payload.pageName,
+        data: newData as any
       }
 
     default:
